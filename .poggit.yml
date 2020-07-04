@@ -4,6 +4,7 @@ branches:
   - master
 projects:
   PluginGenerator:
+    libs:
       - src: CortexPE/Commando/Commando
         version: 2.1.1
 ...
