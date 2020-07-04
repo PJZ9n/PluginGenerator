@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace pjz9n\plugingenerator;
 
+use CortexPE\Commando\exception\HookAlreadyRegistered;
+use CortexPE\Commando\PacketHooker;
 use pocketmine\lang\BaseLang;
 use pocketmine\plugin\PluginBase;
 
@@ -31,6 +33,9 @@ class Main extends PluginBase
     /** @var BaseLang */
     private $lang;
 
+    /**
+     * @throws HookAlreadyRegistered
+     */
     public function onEnable(): void
     {
         $this->saveDefaultConfig();
@@ -39,5 +44,8 @@ class Main extends PluginBase
         $localePath = $this->getFile() . "resources/locale/";
         $this->lang = new BaseLang($lang, $localePath, "eng");
         $this->getLogger()->info($this->lang->translateString("language.selected", [$this->lang->getName()]));
+        if (!PacketHooker::isRegistered()) {
+            PacketHooker::register($this);
+        }
     }
 }
